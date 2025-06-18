@@ -10,8 +10,10 @@ permissions:
   contents: write
 
 jobs:
+
   useCallable:
     uses: ./.github/workflows/build.yml
+
   release:
     runs-on: ubuntu-latest
     permissions:
