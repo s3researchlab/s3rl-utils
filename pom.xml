@@ -6,7 +6,7 @@
 
     <groupId>edu.s3rl.utils</groupId>
     <artifactId>s3rl-utils</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <organization>
         <name>S3 Research Lab</name>
