@@ -9,7 +9,8 @@
     <version>1.0.1</version>
 
     <name>S3RL Utils</name>
-    <description>A lightweight utility library providing common static helper methods for general-purpose operations</description>
+    <description>A lightweight utility library providing common static helper methods for general-purpose operations
+    </description>
 
     <organization>
         <name>S3 Research Lab</name>
@@ -39,7 +40,7 @@
 
     <build>
         <plugins>
-            <!-- Code Coverage report generation -->
+            <!-- Generate Code Coverage for Unit Tests -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -58,6 +59,23 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Generate JavaDoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>
