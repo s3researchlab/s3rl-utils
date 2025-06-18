@@ -59,4 +59,12 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/s3researchlab/s3rl-utils</url>
+        </repository>
+    </distributionManagement>
+
 </project>
