@@ -15,4 +15,21 @@ public class StringUtils {
 
         return str == null || str.isBlank();
     }
+
+    /**
+     * Replace all whitespaces characters (including spaces, tabs,
+     * form feeds, line feeds, and other Unicode whitespace
+     * characters) by " ".
+     *
+     * @param str the input string to be minified; may be null
+     * @return a trimmed string with normalized spacing, or null if input is null
+     */
+    public static String minify(String str) {
+
+        if (str == null) {
+            return null;
+        }
+
+        return str.replaceAll("\\s+", " ").trim();
+    }
 }

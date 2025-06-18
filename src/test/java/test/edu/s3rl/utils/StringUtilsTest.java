@@ -11,6 +11,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StringUtilsTest {
 
     @Test
+    void testIfConstructorIsInstantiatedThenThrowException() {
+
+        assertThrows(InvocationTargetException.class, () -> {
+
+            Constructor<StringUtils> ctor = StringUtils.class.getDeclaredConstructor();
+
+            // Since the constructor is private, you need to make it
+            // accessible to invocation
+            ctor.setAccessible(true);
+
+            ctor.newInstance();
+        });
+    }
+
+    @Test
     void testIfStringIsNullThenTrue() {
         assertTrue(StringUtils.isBlank(null));
     }
@@ -35,17 +50,50 @@ public class StringUtilsTest {
     }
 
     @Test
-    void testIfConstructorIsInstantiatedThenThrowException() {
+    void testWhenMinifyingIfStringIsBlankThenReturnNull() {
+        assertNull(StringUtils.minify(null));
+    }
 
-        assertThrows(InvocationTargetException.class, () -> {
+    @Test
+    void testWhenMinifyingIfStringHasOnlyWhitespacesThenReturnTheCorrectString() {
+        assertEquals("", StringUtils.minify(""));
+        assertEquals("", StringUtils.minify("  "));
+    }
 
-            Constructor<StringUtils> ctor = StringUtils.class.getDeclaredConstructor();
+    @Test
+    void testWhenMinifyingIfStringIsNotBlankThenReturnTheCorrectString() {
+        assertEquals("a", StringUtils.minify(" a      "));
+        assertEquals("a b", StringUtils.minify("  a   b  "));
+    }
 
-            // Since the constructor is private, you need to make it
-            // accessible to invocation
-            ctor.setAccessible(true);
+    @Test
+    void testWhenMinifyingIfStringHasJavaCodeThenReturnTheCorrectString() {
 
-            ctor.newInstance();
-        });
+        String actual = """
+                public class Example {
+                    int field;
+                    int method () {
+                        return field;
+                    }
+                }
+            """;
+
+        String expected = "public class Example { int field; int method () { return field; } }";
+
+        assertEquals(expected, StringUtils.minify(actual));
+    }
+
+    @Test
+    void testWhenMinifyingIfStringHasCCodeThenReturnTheCorrectString() {
+
+        String actual = """
+                int main(){
+                    printf("%d", 12);
+                }
+            """;
+
+        String expected = "int main(){ printf(\"%d\", 12); }";
+
+        assertEquals(expected, StringUtils.minify(actual));
     }
 }
