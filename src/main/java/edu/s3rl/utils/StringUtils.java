@@ -1,16 +1,25 @@
 package edu.s3rl.utils;
 
+/**
+ * Utility class for common string operations.
+ */
 public class StringUtils {
 
     /**
-     * This private constructor is to prevent the instantiation of this class directly
+     * Private constructor is to prevent the instantiation of this class directly.
+     * Throws {@link UnsupportedOperationException} to prevent instantiation,
+     * including attempts via reflection.
      */
     private StringUtils() {
-
-        // Throwing an exception to avoid the use java reflection to instantiate this class
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
+    /**
+     * Checks if a string is null, empty, or contains only whitespace characters.
+     *
+     * @param str the string to check; may be null
+     * @return {@code true} if the string is null, empty, or whitespace-only; {@code false} otherwise
+     */
     public static boolean isBlank(String str) {
 
         return str == null || str.isBlank();
