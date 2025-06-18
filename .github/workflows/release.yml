@@ -41,7 +41,7 @@ jobs:
         id: get_prev_tag
         run: |
           git fetch --tags
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          PREV_TAG=$(git describe --tags --abbrev=0)
           echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
 
       - if: steps.version-decider.outputs.new
