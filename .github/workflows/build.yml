@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    paths:
+      - 'pom.xml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checking out
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - id: version-decider
+        name: Version Decider
+        uses: thiagodnf/version-decider@main
+        with:
+          file: ./pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - if: steps.version-decider.outputs.new
+        name: Creating a new release on Github
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.version-decider.outputs.version }}
+          tag_name: v${{ steps.version-decider.outputs.version }}
+          files: target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
