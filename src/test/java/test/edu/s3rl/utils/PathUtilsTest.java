@@ -61,16 +61,16 @@ public class PathUtilsTest {
     void test() {
 
         String content = "Just a Test";
-        Path tmpFolder = PathUtils.tempFolder().resolve("test.txt");
+        Path tmpFile = PathUtils.tempFolder().resolve("test.txt");
 
         try {
-            PathUtils.writeToFile(tmpFolder, content);
+            PathUtils.writeToFile(tmpFile, content);
+
+            assertTrue(PathUtils.exists(tmpFile));
+            assertFalse(PathUtils.isEmpty(tmpFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        assertTrue(true);
-//        assertNotNull(FileUtils.tempFolder());
     }
 
 }

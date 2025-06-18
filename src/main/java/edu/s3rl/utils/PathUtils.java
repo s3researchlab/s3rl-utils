@@ -83,4 +83,13 @@ public class PathUtils {
         return Files.isDirectory(file);
     }
 
+    public static boolean isEmpty(Path file) throws IOException {
+
+        if (file == null) {
+            throw new IllegalArgumentException("File should not be null");
+        }
+
+        return Files.size(file) == 0;
+    }
+
 }
