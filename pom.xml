@@ -8,6 +8,9 @@
     <artifactId>s3rl-utils</artifactId>
     <version>1.0.1</version>
 
+    <name>S3RL Utils</name>
+    <description>A lightweight utility library providing common static helper methods for general-purpose operations</description>
+
     <organization>
         <name>S3 Research Lab</name>
         <url>https://s3researchlab.github.io</url>
