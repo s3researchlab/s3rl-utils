@@ -11,11 +11,10 @@ permissions:
 
 jobs:
 
-  useCallable:
-    uses: ./.github/workflows/build.yml
-
   release:
+
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -30,6 +29,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'maven'
 
       - id: version-decider
         name: Version Decider
