@@ -1,9 +1,13 @@
 name: Build the project
 
 on:
+  workflow_call:
   push:
     branches:
       - main
+
+permissions:
+  contents: read # access to check out code and install dependencies
 
 jobs:
   build:
