@@ -36,21 +36,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - if: steps.version-decider.outputs.new
-        name: Get previous tag
-        id: get_prev_tag
-        run: |
-          git fetch --tags
-          PREV_TAG=$(git describe --tags --abbrev=0 --always)
-          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
-
-      - if: steps.version-decider.outputs.new
-        name: Generate changelog
-        id: changelog
-        run: |
-          LOG=$(git log ${{ steps.get_prev_tag.outputs.prev_tag }}..HEAD --pretty=format:"- %s")
-          echo "$LOG" > release_notes.md
-          cat release_notes.md
+#      - if: steps.version-decider.outputs.new
+#        name: Get previous tag
+#        id: get_prev_tag
+#        run: |
+#          git fetch --tags
+#          PREV_TAG=$(git describe --tags --abbrev=0 --always)
+#          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
+#
+#      - if: steps.version-decider.outputs.new
+#        name: Generate changelog
+#        id: changelog
+#        run: |
+#          LOG=$(git log ${{ steps.get_prev_tag.outputs.prev_tag }}..HEAD --pretty=format:"- %s")
+#          echo "$LOG" > release_notes.md
+#          cat release_notes.md
 
       - if: steps.version-decider.outputs.new
         name: Publish package to GitHub Packages
@@ -64,7 +64,7 @@ jobs:
         with:
           name: v${{ steps.version-decider.outputs.version }}
           tag_name: v${{ steps.version-decider.outputs.version }}
-          body_path: release_notes.md
+#          body_path: release_notes.md
           files: target/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
