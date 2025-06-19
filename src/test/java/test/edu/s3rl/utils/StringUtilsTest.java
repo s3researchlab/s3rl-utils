@@ -96,4 +96,19 @@ public class StringUtilsTest {
 
         assertEquals(expected, StringUtils.minify(actual));
     }
+
+    @Test
+    void testWhenMinifyingIfStringHasNewLineSymbolThenReturnTheCorrectString() {
+
+        assertEquals("a a", StringUtils.minify("a\na"));
+        assertEquals("a bb", StringUtils.minify("\na\n\nbb\n"));
+        assertEquals("a a", StringUtils.minify("a\na"));
+        assertEquals("a bb", StringUtils.minify("\na\n\nbb\n"));
+
+        assertEquals("the test", StringUtils.minify("the\n test"));
+        assertEquals("the test", StringUtils.minify("the\r\n test"));
+        assertEquals("the test", StringUtils.minify("the\r test"));
+
+        assertEquals("the test", StringUtils.minify("the\t test"));
+    }
 }
