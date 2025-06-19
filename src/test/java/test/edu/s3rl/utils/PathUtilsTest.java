@@ -1,6 +1,8 @@
 package test.edu.s3rl.utils;
 
 import edu.s3rl.utils.PathUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,6 +13,13 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PathUtilsTest {
+
+    private static Path tmpFolder;
+
+    @BeforeAll
+    static void init() {
+        tmpFolder = PathUtils.tempFolder();
+    }
 
     @Test
     void testIfConstructorIsInstantiatedThenThrowException() {
@@ -52,15 +61,16 @@ public class PathUtilsTest {
     }
 
     @Test
-    void testTempFolderShouldNotReturnNull() {
+    void testTempFolderShouldNotReturnBlank() {
 
         assertNotNull(PathUtils.tempFolder());
+        assertNotEquals("", PathUtils.tempFolder().toString().trim());
     }
 
     @Test
     void testWriteToFileIfInvalidArgumentsThenThrowAnException() {
 
-        Path tmpFile = PathUtils.tempFolder().resolve("test.txt");
+        Path tmpFile = tmpFolder.resolve("test.txt");
 
         assertThrows(IllegalArgumentException.class, () -> {
             PathUtils.writeToFile(null, "the content");
@@ -87,7 +97,7 @@ public class PathUtilsTest {
     void testWriteToFileIfAppendThenNoException() {
 
         String content = "The content";
-        Path tmpFile = PathUtils.tempFolder().resolve("append.txt");
+        Path tmpFile = tmpFolder.resolve("append.txt");
 
         try {
 
@@ -110,7 +120,7 @@ public class PathUtilsTest {
     void testWriteToFileIfNewFileThenNoException() {
 
         String content = "The content";
-        Path tmpFile = PathUtils.tempFolder().resolve("new.txt");
+        Path tmpFile = tmpFolder.resolve("new.txt");
 
         try {
 
@@ -127,6 +137,42 @@ public class PathUtilsTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void testDeleteFileIfFileExistsThenNoException() {
+
+        Path tmpFile = tmpFolder.resolve("delete-file.txt");
+
+        try {
+
+            PathUtils.writeToFile(tmpFile, "The content");
+
+            assertTrue(PathUtils.exists(tmpFile));
+            PathUtils.deleteFile(tmpFile);
+            assertFalse(PathUtils.exists(tmpFile));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void testDeleteFileIfFileDoesNotExistThenThrowAnException() {
+
+        Path tmpFile = tmpFolder.resolve("delete-file.txt");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            PathUtils.deleteFile(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            PathUtils.deleteFile(tmpFolder);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            PathUtils.deleteFile(tmpFile);
+        });
     }
 
 }

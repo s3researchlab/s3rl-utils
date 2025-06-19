@@ -84,10 +84,6 @@ public class PathUtils {
         return Path.of(tempDir);
     }
 
-    public static boolean isFile(Path file) {
-        return Files.isRegularFile(file);
-    }
-
     public static boolean isFolder(Path file) {
         return Files.isDirectory(file);
     }
@@ -98,7 +94,16 @@ public class PathUtils {
             return false;
         }
 
-        return isFile(file);
+        return Files.isRegularFile(file);
+    }
+
+    public static boolean isValidFolder(Path file) {
+
+        if (file == null || !exists(file)) {
+            return false;
+        }
+
+        return Files.isDirectory(file);
     }
 
     public static boolean isEmpty(Path file) throws IOException {
@@ -113,7 +118,7 @@ public class PathUtils {
     public static void deleteFile(Path file) throws IOException {
 
         if (!isValidFile(file)) {
-            throw new IllegalArgumentException("file not valid");
+            throw new IllegalArgumentException("File %s does not exist or is not a regular file".formatted(file));
         }
 
         Files.delete(file);
