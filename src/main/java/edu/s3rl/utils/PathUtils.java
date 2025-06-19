@@ -36,6 +36,15 @@ public class PathUtils {
         return Files.exists(path);
     }
 
+    public static String readString(Path file) throws IOException {
+
+        if (!isValidFile(file)) {
+            throw new IllegalArgumentException("file not valid");
+        }
+
+        return Files.readString(file, StandardCharsets.UTF_8);
+    }
+
     public static void writeToFile(Path file, String content) throws IOException {
 
         writeToFile(file, content, false);
@@ -83,6 +92,15 @@ public class PathUtils {
         return Files.isDirectory(file);
     }
 
+    public static boolean isValidFile(Path file) {
+
+        if (file == null || !exists(file)) {
+            return false;
+        }
+
+        return isFile(file);
+    }
+
     public static boolean isEmpty(Path file) throws IOException {
 
         if (file == null) {
@@ -90,6 +108,15 @@ public class PathUtils {
         }
 
         return Files.size(file) == 0;
+    }
+
+    public static void deleteFile(Path file) throws IOException {
+
+        if (!isValidFile(file)) {
+            throw new IllegalArgumentException("file not valid");
+        }
+
+        Files.delete(file);
     }
 
 }

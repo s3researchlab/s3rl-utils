@@ -58,16 +58,72 @@ public class PathUtilsTest {
     }
 
     @Test
-    void test() {
+    void testWriteToFileIfInvalidArgumentsThenThrowAnException() {
 
-        String content = "Just a Test";
         Path tmpFile = PathUtils.tempFolder().resolve("test.txt");
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            PathUtils.writeToFile(null, "the content");
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            PathUtils.writeToFile(tmpFile, null);
+        });
+    }
+
+
+    @Test
+    void testWriteToFileIfFolderThenThrowAnException() {
+
+        assertThrows(IOException.class, () -> {
+
+            Path tmpFile = PathUtils.tempFolder();
+
+            PathUtils.writeToFile(tmpFile, "the content");
+        });
+    }
+
+    @Test
+    void testWriteToFileIfAppendThenNoException() {
+
+        String content = "The content";
+        Path tmpFile = PathUtils.tempFolder().resolve("append.txt");
+
         try {
+
+            if (PathUtils.exists(tmpFile)) {
+                PathUtils.deleteFile(tmpFile);
+            }
+
+            PathUtils.writeToFile(tmpFile, content, true);
+            PathUtils.writeToFile(tmpFile, content, true);
+
+            assertTrue(PathUtils.exists(tmpFile));
+            assertFalse(PathUtils.isEmpty(tmpFile));
+            assertEquals("The contentThe content", PathUtils.readString(tmpFile));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void testWriteToFileIfNewFileThenNoException() {
+
+        String content = "The content";
+        Path tmpFile = PathUtils.tempFolder().resolve("new.txt");
+
+        try {
+
+            if (PathUtils.exists(tmpFile)) {
+                PathUtils.deleteFile(tmpFile);
+            }
+
+            PathUtils.writeToFile(tmpFile, content);
             PathUtils.writeToFile(tmpFile, content);
 
             assertTrue(PathUtils.exists(tmpFile));
             assertFalse(PathUtils.isEmpty(tmpFile));
+            assertEquals(content, PathUtils.readString(tmpFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
